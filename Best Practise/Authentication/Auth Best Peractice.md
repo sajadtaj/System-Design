@@ -1,6 +1,6 @@
 ## 🧩 **معماری 1 : OpenLDAP + Keycloak**
 
-**1️⃣ نام حرفه‌ای:**
+**1️⃣ نام :**
 **Federated Identity & Directory Integration**
 
 **2️⃣ سرویس‌ها:**
@@ -47,7 +47,7 @@ sequenceDiagram
 
 ## 🧩 **معماری 2 : OpenLDAP + Keycloak + OAuth2-Proxy**
 
-**1️⃣ نام حرفه‌ای:**
+**1️⃣ نام :**
 **Identity-Aware Proxy Architecture**
 
 **2️⃣ سرویس‌ها:**
@@ -97,7 +97,7 @@ sequenceDiagram
 
 ## 🧩 **3 : Nginx + Keycloak + OAuth2-Proxy**
 
-**1️⃣ نام حرفه‌ای:**
+**1️⃣ نام :**
 **Cloud-Native SSO Gateway Architecture**
 
 **2️⃣ سرویس‌ها:**
@@ -148,7 +148,7 @@ sequenceDiagram
 
 ## 🧩 **معماری 4 : Nginx + OpenLDAP + Keycloak + OAuth2-Proxy**
 
-**1️⃣ نام حرفه‌ای:**
+**1️⃣ نام :**
 **Edge-Secured Federated IAM Architecture**
 
 **2️⃣ سرویس‌ها:**
@@ -204,7 +204,7 @@ sequenceDiagram
 
 ## 🧩 **معماری 5 : CDN/WAF + Nginx + OAuth2-Proxy + Keycloak + OpenLDAP + API Gateway (+OPA) + Vault**
 
-**1️⃣ نام حرفه‌ای:**
+**1️⃣ نام :**
 **Zero-Trust Cloud Identity & Access Architecture**
 
 **2️⃣ سرویس‌ها:**
@@ -282,7 +282,7 @@ sequenceDiagram
 
 ## 6) CDN/WAF + Nginx + OAuth2-Proxy + Keycloak + OpenLDAP
 
-**1️⃣ نام حرفه‌ای:**
+**1️⃣ نام :**
 **Edge-Secured Federated SSO Architecture**
 
 **2️⃣ سرویس‌ها:**
@@ -348,7 +348,7 @@ sequenceDiagram
 
 CDN/WAF + Nginx + OAuth2-Proxy + Keycloak + OpenLDAP + **API Gateway (+OPA)**
 
-**1️⃣ نام حرفه‌ای:**
+**1️⃣ نام :**
 **Policy-Driven Zero-Trust Gateway Architecture**
 
 **2️⃣ سرویس‌ها:**
@@ -421,7 +421,7 @@ sequenceDiagram
 
 CDN/WAF + Nginx + OAuth2-Proxy + Keycloak + OpenLDAP + API Gateway (+OPA) + **Vault**
 
-**1️⃣ نام حرفه‌ای:**
+**1️⃣ نام :**
 **Zero-Trust IAM with Centralized Secrets Management**
 
 **2️⃣ سرویس‌ها:**
