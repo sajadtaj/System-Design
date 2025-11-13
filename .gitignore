@@ -1,0 +1,82 @@
+*.pdf
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Byte-compiled / optimized / DLL files
+*.pyc
+*.pkl
+*.log
+
+# === Virtual Environments ===
+.env
+.venv/
+env/
+venv/
+ENV/
+.Python
+
+# === Dependency managers ===
+poetry.lock
+Pipfile.lock
+
+# === IDEs & Editors ===
+.vscode/
+.idea/
+*.swp
+
+# === OS Files ===
+.DS_Store
+Thumbs.db
+
+# === Tests & Coverage ===
+htmlcov/
+.coverage
+.cache/
+.pytest_cache/
+.tox/
+.nox/
+
+# === Environment Variables ===
+*.env
+*.env.*
+CleanArchENV/
+# === Docker ===
+*.pid
+docker-compose.override.yml
+docker-compose*.local.yml
+logs/
+build/
+dist/
+
+# === MyPy & Linting ===
+.mypy_cache/
+.dmypy.json
+.pyre/
+.pytype/
+
+# === Jupyter / Experiments ===
+*.ipynb
+.ipynb_checkpoints/
+
+# === Output & Export Files ===
+*.csv
+*.xlsx
+*.json
+*.db
+*.sqlite
+*.parquet
+*.feather
+*.pdf
+# === Backup Files ===
+*.bak
+*.orig
+*.old
+
+# === Custom Project Paths ===
+src/__pycache__/
+tests/__pycache__/
