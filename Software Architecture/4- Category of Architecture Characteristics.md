@@ -28,6 +28,7 @@
 
 <div class="rtl-align">
 
+
 > **Architectural Characteristics (Partially) Listed**
 > فهرست (نسبی و ناتمام) از ویژگی‌های معماری
 

@@ -1,8 +1,35 @@
-بسیار خوب سجاد، متن بالا بخشی از فصل ۳ کتاب *Software Architecture: The Hard Parts* است و درباره‌ی **Coupling (وابستگی)** و معیارهای مشتق‌شده از آن مانند **Abstractness، Instability، و Distance from Main Sequence** صحبت می‌کند.
-در ادامه ترجمه‌ی دقیق، فنی و آموزشی این متن را به فارسی می‌دهم، همراه با مثال‌ها و توضیحات تکمیلی تا درک مفاهیم برایت شفاف‌تر شود.
-(منطق ترجمه بر پایه‌ی متن اصلی، با دقت مفهومی و منبع مستند رسمی است.)
+<style>
+.rtl-align {
+  direction: rtl;
+  text-align: right;
+}
 
----
+/* لیست‌ها هم راست‌چین */
+.rtl-align ul,
+.rtl-align ol {
+  list-style-position: inside;
+  padding-right: 0;
+  margin-right: 1em;
+}
+
+/* فقط باکس‌های کد (مثل ```...```) چپ‌چین و مونو */
+.rtl-align pre code {
+  direction: ltr;           /* جهت چپ به راست */
+  text-align: left;         /* تراز چپ */
+  display: block;           /* حالت باکس */
+  background: #f5f5f5;      /* پس‌زمینه روشن مثل حالت کد */
+  padding: 10px;            /* فاصله داخلی */
+  border-radius: 5px;       /* گوشه‌های گرد */
+  font-family: monospace;   /* فونت مونو برای کد */
+  white-space: pre;         /* حفظ فاصله‌ها */
+}
+
+</style>
+
+<div class="rtl-align">
+
+
+
 
 ## **وابستگی (Coupling)**
 
@@ -13,12 +40,14 @@
 **Structured Design: Fundamentals of a Discipline of Computer Program and Systems Design**
 را منتشر کردند. آن‌ها در این اثر، مفاهیم بنیادینی را تعریف کردند از جمله دو معیار کلیدی در وابستگی نرم‌افزار:
 
-1. **Afferent Coupling (وابستگی ورودی):**
+
+##### 1. **Afferent Coupling (وابستگی ورودی):**
    نشان‌دهنده‌ی تعداد **اتصالات ورودی** به یک جزء از کد (مثل کلاس، تابع یا کامپوننت).
    یعنی چند جزء دیگر به این جزء **وابسته هستند**.
    به بیان ساده، هرچه تعداد وابستگی‌های ورودی بیشتر باشد، این ماژول مسئولیت بیشتری در سیستم دارد.
 
-2. **Efferent Coupling (وابستگی خروجی):**
+
+##### 2. **Efferent Coupling (وابستگی خروجی):**
    نشان‌دهنده‌ی تعداد **اتصالات خروجی** از یک جزء به دیگر اجزا است.
    یعنی این جزء به چند جزء دیگر **وابسته است** تا کار خود را انجام دهد.
 

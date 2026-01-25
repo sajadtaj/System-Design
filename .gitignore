@@ -6,6 +6,8 @@ __pycache__/
 *.pyo
 *.pyd
 *.so
+*.pyc
+*.pytest_cache
 
 # Byte-compiled / optimized / DLL files
 *.pyc

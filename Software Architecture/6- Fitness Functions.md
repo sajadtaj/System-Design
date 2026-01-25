@@ -1,3 +1,34 @@
+<style>
+.rtl-align {
+  direction: rtl;
+  text-align: right;
+}
+
+/* لیست‌ها هم راست‌چین */
+.rtl-align ul,
+.rtl-align ol {
+  list-style-position: inside;
+  padding-right: 0;
+  margin-right: 1em;
+}
+
+/* فقط باکس‌های کد (مثل ```...```) چپ‌چین و مونو */
+.rtl-align pre code {
+  direction: ltr;           /* جهت چپ به راست */
+  text-align: left;         /* تراز چپ */
+  display: block;           /* حالت باکس */
+  background: #f5f5f5;      /* پس‌زمینه روشن مثل حالت کد */
+  padding: 10px;            /* فاصله داخلی */
+  border-radius: 5px;       /* گوشه‌های گرد */
+  font-family: monospace;   /* فونت مونو برای کد */
+  white-space: pre;         /* حفظ فاصله‌ها */
+}
+
+</style>
+
+<div class="rtl-align">
+
+
 
 ## حاکمیت و تابع‌های سنجش شایستگی (Governance and Fitness Functions)
 
@@ -101,12 +132,11 @@
 
 آن‌ها کمک می‌کنند که حتی در دل فرایندهای سریع، **یکپارچگی معماری حفظ شود.** معمار دیگر نیاز نیست تنها با اسناد و جلسات، استانداردها را کنترل کند؛ بلکه ابزارهایی دارد که *به‌صورت دائمی و خودکار* صحت و سلامت معماری را بررسی می‌کنند.
 
-آیا علاقه‌مندی که برای پروژه‌های خودت (مثلاً در معماری مبتنی بر میکروسرویس با Django و PostgreSQL) نمونه‌ای از Fitness Function طراحی کنم؟ مثلاً:
+  میتوان برای پروژه‌های شخصی (مثلاً در معماری مبتنی بر میکروسرویس با Django و PostgreSQL) نمونه‌ای از Fitness Function طراحی کرد. مثلاً:
 
 * برای جلوگیری از over-coupling
 * یا اندازه‌گیری دقیق استقرار موفق هر سرویس
 
-اگر بله، لطفاً اولویت ویژگی‌ها را مشخص کن تا برای هرکدام Fitness Function پیشنهادی تعریف کنم.
 
 ---
 
