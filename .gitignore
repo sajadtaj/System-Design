@@ -1,6 +1,4 @@
-*.pdf
-
-# === Python ===
+.# === Python ===
 __pycache__/
 *.py[cod]
 *.pyo
@@ -73,7 +71,6 @@ dist/
 *.sqlite
 *.parquet
 *.feather
-*.pdf
 # === Backup Files ===
 *.bak
 *.orig
