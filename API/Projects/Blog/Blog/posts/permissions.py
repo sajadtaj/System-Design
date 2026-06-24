@@ -49,7 +49,6 @@ Django REST Framework را برای پیاده‌سازی کنترل دسترس�
 مجوز: MIT
 نویسنده: نام شما
 """
-
 from rest_framework import permissions
 
 

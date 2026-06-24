@@ -1,0 +1,727 @@
+# 24 - Celery and Background Tasks
+
+## اهداف فصل
+
+در پایان این فصل:
+
+* می‌دانید Celery چیست.
+* تفاوت Task همزمان و غیرهمزمان را درک می‌کنید.
+* نقش Redis در Celery را می‌شناسید.
+* یک Task ساده ایجاد می‌کنید.
+* با Retry آشنا می‌شوید.
+* Periodic Task را می‌شناسید.
+* خطاهای رایج استفاده از Celery را درک می‌کنید.
+* می‌دانید چه زمانی Celery لازم نیست.
+
+---
+
+# مقدمه
+
+فرض کنید کاربر درخواست زیر را ارسال می‌کند:
+
+```http id="c1"
+POST /api/register/
+```
+
+---
+
+پس از ثبت‌نام باید:
+
+```text id="c2"
+ارسال ایمیل
+
+ارسال پیامک
+
+ثبت لاگ
+
+ایجاد پروفایل
+```
+
+انجام شود.
+
+---
+
+اگر همه این عملیات داخل View اجرا شوند:
+
+فایل:
+
+```text id="c3"
+MyProject/accounts/views.py
+```
+
+---
+
+کاربر باید منتظر بماند تا همه عملیات تمام شوند.
+
+---
+
+نتیجه:
+
+```text id="c4"
+Response Time بالا
+```
+
+---
+
+# راه حل
+
+عملیات زمان‌بر را به:
+
+```text id="c5"
+Background Task
+```
+
+منتقل می‌کنیم.
+
+---
+
+# Celery چیست؟
+
+بر اساس مستندات رسمی:
+
+```text id="c6"
+Distributed Task Queue
+```
+
+---
+
+یعنی:
+
+```text id="c7"
+سیستمی برای اجرای
+Taskهای پس‌زمینه
+```
+
+---
+
+# معماری Celery
+
+```text id="c8"
+Client
+
+    ↓
+
+Django
+
+    ↓
+
+Redis
+
+    ↓
+
+Celery Worker
+
+    ↓
+
+Task Execution
+```
+
+---
+
+# نقش اجزا
+
+## Django
+
+Task را ایجاد می‌کند.
+
+---
+
+## Redis
+
+پیام را نگهداری می‌کند.
+
+---
+
+## Worker
+
+Task را اجرا می‌کند.
+
+---
+
+# Task چیست؟
+
+یک تابع پایتونی که خارج از Request اجرا می‌شود.
+
+---
+
+مثال:
+
+فایل:
+
+```text id="c9"
+MyProject/notifications/tasks.py
+```
+
+```python id="c10"
+def send_email():
+    ...
+```
+
+---
+
+در Celery:
+
+```python id="c11"
+@shared_task
+def send_email():
+    ...
+```
+
+---
+
+# نصب
+
+```bash id="c12"
+pip install celery
+```
+
+---
+
+Redis:
+
+```bash id="c13"
+docker run redis
+```
+
+---
+
+# ساخت فایل Celery
+
+فایل:
+
+```text id="c14"
+MyProject/config/celery.py
+```
+
+---
+
+```python id="c15"
+from celery import Celery
+
+app = Celery(
+    "config"
+)
+
+app.config_from_object(
+    "django.conf:settings",
+    namespace="CELERY"
+)
+
+app.autodiscover_tasks()
+```
+
+---
+
+# فعال‌سازی
+
+فایل:
+
+```text id="c16"
+MyProject/config/__init__.py
+```
+
+---
+
+```python id="c17"
+from .celery import app as celery_app
+
+__all__ = (
+    "celery_app",
+)
+```
+
+---
+
+# تنظیمات
+
+فایل:
+
+```text id="c18"
+MyProject/config/settings.py
+```
+
+---
+
+```python id="c19"
+CELERY_BROKER_URL = (
+    "redis://localhost:6379/0"
+)
+```
+
+---
+
+```python id="c20"
+CELERY_RESULT_BACKEND = (
+    "redis://localhost:6379/0"
+)
+```
+
+---
+
+# اولین Task
+
+فایل:
+
+```text id="c21"
+MyProject/notifications/tasks.py
+```
+
+---
+
+```python id="c22"
+from celery import shared_task
+```
+
+---
+
+```python id="c23"
+@shared_task
+def send_welcome_email(
+    user_id
+):
+    print(
+        f"User={user_id}"
+    )
+```
+
+---
+
+# فراخوانی Task
+
+فایل:
+
+```text id="c24"
+MyProject/accounts/views.py
+```
+
+---
+
+```python id="c25"
+from notifications.tasks import (
+    send_welcome_email
+)
+```
+
+---
+
+```python id="c26"
+send_welcome_email.delay(
+    user.id
+)
+```
+
+---
+
+نکته مهم:
+
+```python id="c27"
+.delay()
+```
+
+---
+
+باعث می‌شود:
+
+```text id="c28"
+Task
+```
+
+در Worker اجرا شود.
+
+---
+
+نه داخل Request.
+
+---
+
+# اجرای Worker
+
+```bash id="c29"
+celery \
+-A config worker \
+--loglevel=info
+```
+
+---
+
+اکنون Taskها اجرا می‌شوند.
+
+---
+
+# Retry
+
+فرض کنید:
+
+```text id="c30"
+SMTP Server
+```
+
+در دسترس نیست.
+
+---
+
+می‌توان Task را دوباره اجرا کرد.
+
+---
+
+فایل:
+
+```text id="c31"
+MyProject/notifications/tasks.py
+```
+
+---
+
+```python id="c32"
+@shared_task(
+    autoretry_for=(Exception,),
+    retry_backoff=True,
+    max_retries=5
+)
+def send_email():
+    ...
+```
+
+---
+
+مزایا:
+
+```text id="c33"
+Resilience
+
+Fault Tolerance
+```
+
+---
+
+# ارسال Object ممنوع
+
+اشتباه:
+
+```python id="c34"
+send_email.delay(
+    user
+)
+```
+
+---
+
+بهتر:
+
+```python id="c35"
+send_email.delay(
+    user.id
+)
+```
+
+---
+
+سپس:
+
+```python id="c36"
+User.objects.get(...)
+```
+
+---
+
+داخل Task.
+
+---
+
+# چرا؟
+
+زیرا:
+
+```text id="c37"
+Serialization
+```
+
+ساده‌تر و پایدارتر می‌شود.
+
+---
+
+# Periodic Tasks
+
+برخی Taskها زمان‌بندی دارند.
+
+---
+
+مثال:
+
+```text id="c38"
+Backup
+
+Report Generation
+
+Data Sync
+```
+
+---
+
+# Celery Beat
+
+برای اجرای زمان‌بندی شده.
+
+---
+
+```text id="c39"
+Celery Beat
+```
+
+---
+
+نمونه:
+
+```python id="c40"
+CELERY_BEAT_SCHEDULE = {
+    ...
+}
+```
+
+---
+
+# مثال
+
+هر شب:
+
+```text id="c41"
+02:00 AM
+```
+
+---
+
+گزارش تولید شود.
+
+---
+
+بدون دخالت کاربر.
+
+---
+
+# Taskهای مناسب
+
+موارد مناسب برای Celery:
+
+```text id="c42"
+Email
+
+SMS
+
+Push Notification
+
+File Processing
+
+PDF Generation
+
+Data Import
+
+Data Export
+```
+
+---
+
+# Taskهای نامناسب
+
+موارد نامناسب:
+
+```text id="c43"
+Database CRUD ساده
+
+Queryهای سبک
+
+Validation
+```
+
+---
+
+اگر Task:
+
+```text id="c44"
+50ms
+```
+
+زمان می‌برد:
+
+---
+
+احتمالاً Celery لازم نیست.
+
+---
+
+# خطاهای رایج
+
+## استفاده بیش از حد
+
+بزرگ‌ترین اشتباه.
+
+---
+
+هر چیزی نباید Task شود.
+
+---
+
+## انتقال منطق کسب‌وکار
+
+اشتباه:
+
+```text id="c45"
+تمام Business Logic
+داخل Celery
+```
+
+---
+
+Celery ابزار اجرای Task است.
+
+---
+
+نه جایگزین Architecture.
+
+---
+
+## نداشتن Retry
+
+در سرویس‌های خارجی.
+
+---
+
+## ارسال Objectهای بزرگ
+
+باعث افزایش مصرف حافظه می‌شود.
+
+---
+
+## عدم مانیتورینگ
+
+ممکن است Worker متوقف شود و کسی متوجه نشود.
+
+---
+
+# Monitoring
+
+ابزار مشهور:
+
+```text id="c46"
+Flower
+```
+
+---
+
+برای مشاهده:
+
+```text id="c47"
+Tasks
+
+Failures
+
+Workers
+```
+
+---
+
+# معماری پیشنهادی
+
+```text id="c48"
+Django
+
+    ↓
+
+Redis
+
+    ↓
+
+Celery Worker
+
+    ↓
+
+External Services
+```
+
+---
+
+# Best Practices
+
+1. فقط کارهای زمان‌بر را به Celery منتقل کنید.
+2. Object کامل ارسال نکنید.
+3. ID ارسال کنید.
+4. Retry را برای سرویس‌های خارجی فعال کنید.
+5. Workerها را مانیتور کنید.
+6. از Celery Beat برای Jobهای زمان‌بندی شده استفاده کنید.
+7. Business Logic را از Celery جدا نگه دارید.
+
+---
+
+# چک‌لیست استفاده از Celery
+
+قبل از ساخت Task:
+
+```text id="c49"
+✓ واقعاً زمان‌بر است؟
+
+✓ نیاز به اجرای غیرهمزمان دارد؟
+
+✓ Retry لازم است؟
+
+✓ مانیتورینگ وجود دارد؟
+
+✓ امکان شکست Task بررسی شده؟
+```
+
+---
+
+# جمع‌بندی
+
+در این فصل یاد گرفتیم:
+
+* Celery چیست.
+* Redis چه نقشی دارد.
+* Task چیست.
+* چگونه Task ایجاد کنیم.
+* چگونه Worker اجرا کنیم.
+* Retry چیست.
+* Celery Beat چیست.
+* چه زمانی Celery لازم است.
+
+---
+
+# مهم‌ترین نکته فصل
+
+Celery برای:
+
+```text id="c50"
+سریع‌تر کردن Request
+```
+
+است.
+
+---
+
+نه برای:
+
+```text id="c51"
+پیچیده‌تر کردن معماری
+```
+
+---
+
+اگر عملیاتی سریع است، آن را داخل Request نگه دارید.
+
+اگر زمان‌بر است، آن را به Background Task منتقل کنید.
+
+---
+
+فصل بعدی و پایانی بخش Production:
+
+```text id="c52"
+25 - Docker and Deployment
+```
+
+---
+
+## منابع رسمی
+
+* [Celery Documentation](https://docs.celeryq.dev/en/stable/?utm_source=chatgpt.com)
+* [Celery First Steps Documentation](https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html?utm_source=chatgpt.com)
+* [Celery Tasks Documentation](https://docs.celeryq.dev/en/stable/userguide/tasks.html?utm_source=chatgpt.com)
+* [Celery Periodic Tasks Documentation](https://docs.celeryq.dev/en/stable/userguide/periodic-tasks.html?utm_source=chatgpt.com)
+

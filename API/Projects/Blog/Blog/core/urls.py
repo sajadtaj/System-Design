@@ -5,4 +5,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/',include('posts.urls')),
     path("api-auth",include('rest_framework.urls')),
+    path("api/v1/dj-rest-auth/", include("dj_rest_auth.urls")),                           # for login,logout,reset pass
+    path("api/v1/dj-rest-auth/registration/", include("dj_rest_auth.registration.urls")), # for register
 ]

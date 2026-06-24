@@ -7,8 +7,8 @@ from .models import CustomUser
 
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
-    form = CustomUserChangeForm
-    model = CustomUser
+    form     = CustomUserChangeForm
+    model    = CustomUser
     list_display = ['email','username', 'name' ,'is_staff']
 
     fieldsets = (
