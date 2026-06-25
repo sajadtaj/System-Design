@@ -1,7 +1,14 @@
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-q50a%@7d-d^==@u$m%p3ehpg)2hiyss^=14qyyw_i%7=a$e!3%'
-DEBUG = True
+
+# For .env variable
+from environs import Env
+env = Env()
+env.read_env()
+
+DEBUG = env.bool("DEBUG", default=False)
+SECRET_KEY = env.str("SECRET_KEY")
+
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -10,6 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic', # for whitenoise before staticfiles
     'django.contrib.staticfiles',
     "django.contrib.sites",     #for User `Registration` after set allauth
     #External
@@ -21,6 +29,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",    # for User Registration
     "dj_rest_auth",             # for Api :add log in, log out, and password reset API endpoints
     "dj_rest_auth.registration",# for User Registration
+    "drf_spectacular",          # for Schema Schema +swagger+ Docs
     #Internal
     'accounts',
     'posts',
@@ -30,6 +39,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware", # for whitenoise
     "corsheaders.middleware.CorsMiddleware", # for corsheaders
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -105,8 +115,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 
-STATIC_URL = 'static/'
-
+STATIC_URL          = 'static/'
+STATICFILES_DIRS    = [BASE_DIR / "static"] # new
+STATIC_ROOT         = BASE_DIR / "staticfiles" # new
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# new
 # Auth User
 AUTH_USER_MODEL = "accounts.CustomUser"
 
@@ -122,6 +135,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
         ],
+    "DEFAULT_SCHEMA_CLASS" : "drf_spectacular.openapi.AutoSchema", # for Schema +swagger+ Docs
 }
 
 # "cors",
@@ -132,4 +146,11 @@ CORS_ORIGIN_WHITELIST = (
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
 
 
+# drf_spectacular   for Schema +swagger+ Docs
 
+SPECTACULAR_SETTINGS = {
+"TITLE": "Blog API Project",
+"DESCRIPTION": "A sample blog to learn about DRF",
+"VERSION": "1.0.0",
+# OTHER SETTINGS
+}
