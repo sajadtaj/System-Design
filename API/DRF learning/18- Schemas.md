@@ -18,7 +18,7 @@
 
 Schema یعنی:
 
-```text id="s1"
+```text
 توصیف ساختاری API
 ```
 
@@ -40,7 +40,7 @@ Schema سندی است که توضیح می‌دهد:
 
 فرض کنید API زیر را ساخته‌اید:
 
-```http id="s2"
+```http
 GET /api/books/
 
 POST /api/books/
@@ -60,7 +60,7 @@ GET /api/books/{id}/
 
 پاسخ:
 
-```text id="s3"
+```text
 Schema
 ```
 
@@ -70,7 +70,7 @@ Schema
 
 Metadata:
 
-```text id="s4"
+```text
 اطلاعات یک Endpoint
 ```
 
@@ -78,7 +78,7 @@ Metadata:
 
 Schema:
 
-```text id="s5"
+```text
 توصیف کامل کل API
 ```
 
@@ -86,7 +86,7 @@ Schema:
 
 Metadata:
 
-```http id="s6"
+```http
 OPTIONS /api/books/
 ```
 
@@ -94,7 +94,7 @@ OPTIONS /api/books/
 
 Schema:
 
-```text id="s7"
+```text
 کل پروژه
 ```
 
@@ -104,7 +104,7 @@ Schema:
 
 امروزه استاندارد صنعت:
 
-```text id="s8"
+```text
 OpenAPI Specification
 ```
 
@@ -127,7 +127,7 @@ OpenAPI Specification
 
 نمونه ساده:
 
-```yaml id="s9"
+```yaml
 paths:
 
   /books:
@@ -147,7 +147,7 @@ paths:
 
 مهم این است که بدانید:
 
-```text id="s10"
+```text
 Schema
 ```
 
@@ -163,11 +163,11 @@ DRF قابلیت تولید Schema را دارد.
 
 فایل:
 
-```text id="s11"
+```text
 MyProject/config/urls.py
 ```
 
-```python id="s12"
+```python
 from rest_framework.schemas import (
     get_schema_view
 )
@@ -175,7 +175,7 @@ from rest_framework.schemas import (
 
 ---
 
-```python id="s13"
+```python
 schema_view = (
     get_schema_view(
         title="Book API",
@@ -187,7 +187,7 @@ schema_view = (
 
 ---
 
-```python id="s14"
+```python
 urlpatterns = [
 
     path(
@@ -201,7 +201,7 @@ urlpatterns = [
 
 اکنون:
 
-```http id="s15"
+```http
 /schema/
 ```
 
@@ -219,7 +219,7 @@ Schema پروژه را نمایش می‌دهد.
 
 اما در پروژه‌های واقعی:
 
-```text id="s16"
+```text
 محدودیت دارد.
 ```
 
@@ -227,7 +227,7 @@ Schema پروژه را نمایش می‌دهد.
 
 به همین دلیل اکثر تیم‌ها از:
 
-```text id="s17"
+```text
 drf-spectacular
 ```
 
@@ -243,7 +243,7 @@ drf-spectacular
 
 نصب:
 
-```bash id="s18"
+```bash
 pip install drf-spectacular
 ```
 
@@ -253,11 +253,11 @@ pip install drf-spectacular
 
 فایل:
 
-```text id="s19"
+```text
 MyProject/config/settings.py
 ```
 
-```python id="s20"
+```python
 REST_FRAMEWORK = {
 
     "DEFAULT_SCHEMA_CLASS":
@@ -272,11 +272,11 @@ REST_FRAMEWORK = {
 
 فایل:
 
-```text id="s21"
+```text
 MyProject/config/urls.py
 ```
 
-```python id="s22"
+```python
 from drf_spectacular.views import (
 
     SpectacularAPIView,
@@ -289,7 +289,7 @@ from drf_spectacular.views import (
 
 ---
 
-```python id="s23"
+```python
 urlpatterns += [
 
     path(
@@ -324,7 +324,7 @@ Swagger یک رابط گرافیکی برای API است.
 
 مثال:
 
-```text id="s24"
+```text
 GET /books/
 
 POST /books/
@@ -358,7 +358,7 @@ POST /books/
 
 تمرکز بیشتر روی:
 
-```text id="s25"
+```text
 خوانایی مستندات
 ```
 
@@ -366,7 +366,7 @@ POST /books/
 
 بسیاری از شرکت‌ها:
 
-```text id="s26"
+```text
 Swagger
 ```
 
@@ -374,7 +374,7 @@ Swagger
 
 و:
 
-```text id="s27"
+```text
 ReDoc
 ```
 
@@ -388,13 +388,13 @@ ReDoc
 
 فایل:
 
-```text id="s28"
+```text
 MyProject/books/views.py
 ```
 
 ---
 
-```python id="s29"
+```python
 from drf_spectacular.utils import (
     extend_schema
 )
@@ -402,7 +402,7 @@ from drf_spectacular.utils import (
 
 ---
 
-```python id="s30"
+```python
 @extend_schema(
     summary="Book List",
     description="Returns all books"
@@ -423,7 +423,7 @@ class BookListAPIView(
 
 مثال:
 
-```http id="s31"
+```http
 GET /books/?title=django
 ```
 
@@ -443,7 +443,7 @@ GET /books/?title=django
 
 فصل:
 
-```text id="s32"
+```text
 06.1 JWT
 ```
 
@@ -455,7 +455,7 @@ GET /books/?title=django
 
 تا Swagger بداند:
 
-```text id="s33"
+```text
 Bearer Token
 ```
 
@@ -467,7 +467,7 @@ Bearer Token
 
 یک Frontend Developer می‌تواند:
 
-```text id="s34"
+```text
 بدون خواندن کد Backend
 ```
 
@@ -479,7 +479,7 @@ API را درک کند.
 
 حتی برخی ابزارها قادرند:
 
-```text id="s35"
+```text
 Client Code Generation
 ```
 
@@ -491,7 +491,7 @@ Client Code Generation
 
 در DRF:
 
-```text id="s36"
+```text
 خیر
 ```
 
@@ -503,7 +503,7 @@ Client Code Generation
 
 اما:
 
-```text id="s37"
+```text
 توضیحات
 مثال‌ها
 Business Rules
@@ -525,7 +525,7 @@ Business Rules
 
 مستندات باید:
 
-```text id="s38"
+```text
 Live
 ```
 
@@ -579,7 +579,7 @@ Swagger و ReDoc این مشکل را حل می‌کنند.
 
 امروزه در اکثر پروژه‌های DRF جدید:
 
-```text id="s39"
+```text
 drf-spectacular
 +
 Swagger
@@ -591,7 +591,7 @@ OpenAPI
 
 اگر فقط یک ابزار از کل این فصل را انتخاب کنید، آن ابزار:
 
-```text id="s40"
+```text
 drf-spectacular
 ```
 
@@ -601,7 +601,7 @@ drf-spectacular
 
 فصل بعدی:
 
-```text id="s41"
+```text
 19 - Testing
 ```
 
@@ -612,4 +612,3 @@ drf-spectacular
 * Schemas
 
 [DRF Schemas Documentation](https://www.django-rest-framework.org/api-guide/schemas/?utm_source=chatgpt.com)
-
