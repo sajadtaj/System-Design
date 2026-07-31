@@ -1,0 +1,15 @@
+.docker
+.git
+.gitignore
+.env
+.env/
+.venv/
+venv/
+data/
+uv*
+__pycache__
+
+
+
+# فایل ریر باید به داکر برود
+!uv.lock

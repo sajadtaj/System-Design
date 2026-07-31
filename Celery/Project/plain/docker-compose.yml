@@ -1,0 +1,68 @@
+services:
+
+  redis:
+    image: ${REDIS_IMAGE_NAME:-DOCKER_IMAGES_SOURCE/REDIS_IMAGE_TAG}
+    container_name: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 30s
+      retries: 50
+      start_period: 30s
+    restart: always
+    networks:
+      - main_network
+      
+  django:
+    container_name: django_celery_project
+    build:
+      context: Django/
+      dockerfile: Dockerfile
+    command: sh -c "uv run manage.py migrate && uv run manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./Django:/app
+    ports:
+      - "8080:8000"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    networks:
+      - main_network
+
+  celery:
+    container_name: celery
+    build:
+      context: Django/
+      dockerfile: Dockerfile
+    command: uv run celery --app=config worker -l INFO -Q celery,celery:1,celery:2,celery:3
+    volumes:
+      - ./Django:/app
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - django
+    networks:
+      - main_network
+
+  # celery_worker:
+  #   container_name: celery_worker
+  #   build:
+  #     context: celery_worker/
+  #     dockerfile: Dockerfile
+  #   command: uv run celery --app=celery_base worker -l INFO -Q queue2
+  #   volumes:
+  #     - ./celery_worker:/app
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - redis
+  #     - django
+  #   networks:
+  #     - main_network
+
+networks:
+  main_network:

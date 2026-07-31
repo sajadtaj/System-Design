@@ -1,0 +1,19 @@
+services:
+  redis:
+    image: ${REDIS_IMAGE_NAME:-DOCKER_IMAGES_SOURCE/REDIS_IMAGE_TAG}
+    container_name: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 30s
+      retries: 50
+      start_period: 30s
+    restart: always
+    networks:
+      - main_network
+      
+
+networks:
+  main_network:
